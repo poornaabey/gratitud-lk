@@ -1,0 +1,147 @@
+// GratituD.lk — Prisma schema (Supabase PostgreSQL)
+// Prices stored as integer cents (LKR * 100). Volume scores drive the fullness meter.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProductCategory {
+  ANCHOR
+  LEATHER
+  GROOMING
+  TREATS
+  OTHER
+}
+
+enum OrderStatus {
+  PENDING
+  AWAITING_PAYMENT
+  PAID
+  PREPARING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum OrderItemKind {
+  PACKAGING
+  ANCHOR
+  ADDON
+}
+
+/// High-utility tech + lifestyle catalog items.
+model Product {
+  id          String          @id @default(cuid())
+  slug        String          @unique
+  name        String
+  description String
+  priceCents  Int
+  category    ProductCategory
+  volumeScore Int
+  imageUrl    String?
+  stock       Int             @default(0)
+  isActive    Boolean         @default(true)
+  sortOrder   Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  orderItems OrderItem[]
+
+  @@index([category, isActive])
+  @@index([isActive, sortOrder])
+  @@map("products")
+}
+
+/// Packaging themes — base price + capacity for the fullness meter.
+model BoxTemplate {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  description   String?
+  basePriceCents Int
+  maxVolume     Int
+  imageUrl      String?
+  swatchClass    String?
+  isActive      Boolean  @default(true)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  orders Order[]
+
+  @@index([isActive, sortOrder])
+  @@map("box_templates")
+}
+
+/// Gifting checkout order — recipient separate from billing.
+model Order {
+  id     String      @id @default(cuid())
+  userId String?
+  status OrderStatus @default(PENDING)
+
+  /// Snapshot of selected packaging (nullable if deleted later).
+  boxTemplateId String?
+  boxTemplate   BoxTemplate? @relation(fields: [boxTemplateId], references: [id], onDelete: SetNull)
+
+  totalAmountCents Int
+  currency         String @default("LKR")
+
+  /// Personalization
+  message   String?
+  isSurprise Boolean @default(true)
+
+  /// Recipient (gift destination)
+  recipientName    String
+  recipientPhone   String
+  recipientEmail   String?
+  recipientAddress String
+  recipientCity    String  @default("Colombo")
+  deliveryDate     DateTime
+
+  /// Billing (payer)
+  billingName    String
+  billingEmail   String
+  billingPhone   String
+  billingAddress String?
+
+  /// PayHere (Phase 4)
+  payhereOrderId String? @unique
+  paymentId      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items OrderItem[]
+
+  @@index([status, createdAt])
+  @@index([userId])
+  @@index([deliveryDate])
+  @@map("orders")
+}
+
+/// Line items inside an order (packaging / anchor / add-ons).
+model OrderItem {
+  id      String        @id @default(cuid())
+  orderId String
+  order   Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  kind             OrderItemKind
+  nameSnapshot     String
+  priceCents       Int
+  volumeScore      Int            @default(0)
+  quantity         Int            @default(1)
+
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
+  @@map("order_items")
+}
