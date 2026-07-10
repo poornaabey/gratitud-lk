@@ -37,15 +37,15 @@ export function FinalCta() {
         <motion.div
           {...motionPrefs.inView(0)}
           viewport={viewportOnce}
-          className="overflow-hidden rounded-[2rem] border border-zinc-200 bg-navy px-8 py-14 text-center shadow-soft-lg sm:px-14 dark:border-zinc-800"
+          className="overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-900 px-8 py-14 text-center shadow-soft-lg sm:px-14"
         >
           <p className="text-xs font-semibold tracking-[0.18em] text-terracotta uppercase">
             {SITE.name}
           </p>
-          <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight text-zinc-50 sm:text-4xl">
             Ready to build something unforgettable?
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-zinc-400 sm:text-base">
             {SITE.tagline} Start with packaging, add a tech anchor, and wrap it with a note that
             feels handwritten.
           </p>
@@ -57,7 +57,7 @@ export function FinalCta() {
             <Button
               size="lg"
               variant="outline"
-              className="border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white dark:border-white/20"
+              className="border-zinc-600 bg-transparent text-zinc-50 hover:bg-zinc-800 hover:text-zinc-50"
               render={<Link href={`mailto:${SITE.email}`} />}
             >
               Corporate enquiries
@@ -68,11 +68,11 @@ export function FinalCta() {
             {PERKS.map((perk) => (
               <div
                 key={perk.title}
-                className="rounded-2xl border border-white/10 bg-white/5 px-5 py-5"
+                className="rounded-2xl border border-zinc-700/80 bg-zinc-950/50 px-5 py-5"
               >
                 <perk.icon className="size-5 text-terracotta" />
-                <p className="mt-4 text-sm font-semibold text-white">{perk.title}</p>
-                <p className="mt-1.5 text-xs leading-relaxed text-white/60">{perk.text}</p>
+                <p className="mt-4 text-sm font-semibold text-zinc-50">{perk.title}</p>
+                <p className="mt-1.5 text-xs leading-relaxed text-zinc-400">{perk.text}</p>
               </div>
             ))}
           </div>

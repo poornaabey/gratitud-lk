@@ -62,6 +62,15 @@ npm run db:seed      # seed catalog
 npm run db:studio    # Prisma Studio
 ```
 
+## Brand assets
+
+Final copper lockup under `public/brand/`:
+
+| File | Use |
+|------|-----|
+| `logo-lockup.png` | Navbar, hero, footer (emblem + GratituD.lk) |
+| `logo-emblem.png` | Favicon / compact mark |
+
 ## Folder architecture
 
 ```

@@ -31,7 +31,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-zinc-200/80 bg-white/90 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/90">
       <Container className="flex h-[4.25rem] items-center justify-between gap-4">
-        <Logo />
+        <Logo priority />
 
         <nav className="hidden items-center gap-8 lg:flex">
           {NAV_LINKS.map((link) => (

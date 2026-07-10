@@ -111,8 +111,8 @@
   --muted: #f1f5f9;
   --muted-foreground: #71717a; /* zinc-500 */
 
-  /* Action warmth — soft terracotta (gifting emotion, not neon) */
-  --accent: #c17f59;
+  /* Action warmth — soft copper / terracotta (aligned with brand metal) */
+  --accent: #b8734a;
   --accent-foreground: #ffffff;
 
   --destructive: #dc2626;
@@ -125,7 +125,7 @@
   --navy: #1e293b;
   --navy-foreground: #f8fafc;
   --navy-soft: #334155; /* slate-700 */
-  --terracotta: #c17f59;
+  --terracotta: #b8734a;
   --terracotta-foreground: #ffffff;
   --champagne: #d4b896; /* soft highlight / fullness fill */
   --champagne-foreground: #1e293b;

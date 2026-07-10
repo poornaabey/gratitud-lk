@@ -32,7 +32,7 @@ export function Footer() {
       <Container className="py-14 md:py-16">
         <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr]">
           <div className="max-w-sm space-y-4">
-            <Logo />
+            <Logo variant="lockup" />
             <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
               {SITE.tagline}
             </p>

@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { ArrowRightIcon, GiftIcon, MapPinIcon } from "lucide-react"
 
@@ -56,9 +57,16 @@ export function Hero() {
           </motion.div>
 
           <motion.div {...motionPrefs.fadeUp(0.06)} className="space-y-6">
-            <p className="text-sm font-semibold tracking-[0.18em] text-terracotta uppercase">
-              {SITE.name}
-            </p>
+            <div className="flex justify-center md:justify-start">
+              <Image
+                src="/brand/logo-lockup.png"
+                alt={SITE.name}
+                width={520}
+                height={160}
+                priority
+                className="h-14 w-auto max-w-[min(100%,320px)] object-contain sm:h-16 sm:max-w-[380px]"
+              />
+            </div>
             <h1 className="text-balance text-4xl font-semibold leading-[1.12] tracking-tight text-zinc-900 sm:text-5xl lg:text-[3.5rem] dark:text-zinc-50">
               Premium gifts that feel{" "}
               <em className="font-emphasis not-italic text-terracotta">personal</em>

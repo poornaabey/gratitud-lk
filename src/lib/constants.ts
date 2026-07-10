@@ -5,6 +5,7 @@
 export const SITE = {
   name: "GratituD.lk",
   tagline: "Gifts that feel like a hug from home.",
+  brandLine: "Curated Gift Collections",
   city: "Colombo, Sri Lanka",
   phone: "+94 77 000 0000",
   email: "hello@gratitud.lk",
