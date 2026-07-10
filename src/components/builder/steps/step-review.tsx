@@ -84,11 +84,10 @@ export function StepReview({ catalog }: StepReviewProps) {
         </dl>
       </div>
 
-      <div className="rounded-2xl border border-dashed border-zinc-300 bg-slate-50 p-5 text-sm dark:border-zinc-700 dark:bg-zinc-950">
-        <p className="font-medium text-zinc-900 dark:text-zinc-50">Checkout arrives in Phase 4</p>
+      <div className="rounded-2xl border border-zinc-200 bg-slate-50 p-5 text-sm dark:border-zinc-800 dark:bg-zinc-950">
+        <p className="font-medium text-zinc-900 dark:text-zinc-50">Ready for gifting checkout</p>
         <p className="mt-1 text-zinc-500">
-          Recipient vs billing details, delivery date picker, surprise toggle, and PayHere hash
-          generation.
+          Next: recipient vs billing, delivery date, surprise toggle, then PayHere in LKR.
         </p>
       </div>
 

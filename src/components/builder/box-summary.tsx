@@ -1,5 +1,6 @@
 "use client"
 
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { Share2Icon } from "lucide-react"
 import { toast } from "sonner"
 
@@ -16,6 +17,7 @@ type BoxSummaryProps = {
 }
 
 export function BoxSummary({ catalog }: BoxSummaryProps) {
+  const reduce = Boolean(useReducedMotion())
   const packagingSlug = useBuilderStore((s) => s.packagingSlug)
   const anchorSlug = useBuilderStore((s) => s.anchorSlug)
   const addonSlugs = useBuilderStore((s) => s.addonSlugs)
@@ -47,7 +49,18 @@ export function BoxSummary({ catalog }: BoxSummaryProps) {
             Live summary
           </p>
           <p className="mt-1 text-2xl font-semibold tracking-tight tabular-nums text-zinc-900 dark:text-zinc-50">
-            {formatLKR(totalCents)}
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={totalCents}
+                initial={reduce ? false : { opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduce ? undefined : { opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
+                className="inline-block"
+              >
+                {formatLKR(totalCents)}
+              </motion.span>
+            </AnimatePresence>
           </p>
           <p className="mt-1 text-sm text-zinc-500">
             {itemCount} {itemCount === 1 ? "item" : "items"}

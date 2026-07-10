@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
 import { Share2Icon } from "lucide-react"
@@ -11,6 +12,7 @@ import { buildShareUrl } from "@/lib/builder/share"
 import { useBuilderStore } from "@/store/builder-store"
 import { useCatalog } from "@/hooks/use-catalog"
 import { useBuilderTotals } from "@/hooks/use-builder-totals"
+import { useMotionPrefs } from "@/hooks/use-motion-prefs"
 import { Container } from "@/components/layout/container"
 import { StepIndicator } from "@/components/builder/step-indicator"
 import { BoxSummary } from "@/components/builder/box-summary"
@@ -40,6 +42,7 @@ export function BuilderWizard() {
 
   const { totalCents, itemCount } = useBuilderTotals(catalog)
   const stepIndex = BUILDER_STEPS.findIndex((s) => s.id === step)
+  const motionPrefs = useMotionPrefs()
 
   React.useEffect(() => {
     if (didHydrate.current) return
@@ -137,13 +140,7 @@ export function BuilderWizard() {
         <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
           <div className="min-w-0">
             <AnimatePresence mode="wait">
-              <motion.div
-                key={step}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.22 }}
-              >
+              <motion.div key={step} {...motionPrefs.step()}>
                 {step === "packaging" ? (
                   <StepPackaging templates={catalog.boxTemplates} />
                 ) : null}
@@ -163,7 +160,10 @@ export function BuilderWizard() {
                   Continue
                 </Button>
               ) : (
-                <Button disabled title="Checkout in Phase 4">
+                <Button
+                  disabled={!packagingSlug || !anchorSlug}
+                  render={<Link href="/checkout" />}
+                >
                   Proceed to checkout
                 </Button>
               )}
@@ -174,7 +174,12 @@ export function BuilderWizard() {
         </div>
       </Container>
 
-      <StickyPriceBar totalCents={totalCents} itemCount={itemCount} onShare={shareBox} />
+      <StickyPriceBar
+        totalCents={totalCents}
+        itemCount={itemCount}
+        onShare={shareBox}
+        checkoutHref={step === "review" && packagingSlug && anchorSlug ? "/checkout" : undefined}
+      />
     </div>
   )
 }

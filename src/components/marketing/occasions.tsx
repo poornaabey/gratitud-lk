@@ -5,10 +5,14 @@ import { motion } from "framer-motion"
 import { ArrowUpRightIcon } from "lucide-react"
 
 import { OCCASIONS } from "@/lib/data/catalog"
+import { viewportOnce } from "@/lib/motion"
+import { useMotionPrefs } from "@/hooks/use-motion-prefs"
 import { Container } from "@/components/layout/container"
 import { SectionHeader } from "@/components/marketing/section-header"
 
 export function Occasions() {
+  const motionPrefs = useMotionPrefs()
+
   return (
     <section id="occasions" className="bg-white py-20 md:py-28 dark:bg-zinc-950">
       <Container>
@@ -22,10 +26,8 @@ export function Occasions() {
           {OCCASIONS.map((occasion, index) => (
             <motion.div
               key={occasion.id}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: index * 0.05, duration: 0.35 }}
+              {...motionPrefs.inView(index * 0.05)}
+              viewport={viewportOnce}
             >
               <Link
                 href={`/build?occasion=${occasion.id}`}

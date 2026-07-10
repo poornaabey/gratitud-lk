@@ -48,6 +48,9 @@ Prices are stored as **integer cents** (LKR × 100).
 | `GET` | `/api/box-templates/[slug]` | Single template |
 | `POST` | `/api/orders` | Create pending order (server-computed total) |
 | `GET` | `/api/orders/[id]` | Fetch order + items |
+| `POST` | `/api/checkout` | Gifting checkout → PayHere fields or demo |
+| `POST` | `/api/payhere/hash` | Server-only checkout hash |
+| `POST` | `/api/payhere/notify` | PayHere payment notification webhook |
 
 ### DB scripts
 
@@ -77,8 +80,8 @@ src/
 1. **Phase 1** — Scaffold, premium UI & marketing/builder preview ✅
 2. **Phase 2** — Prisma schema & API routes ✅
 3. **Phase 3** — Zustand store & production Box Builder UI ✅
-4. **Phase 4** — Checkout & PayHere integration
-5. **Phase 5** — Animations polish & final testing
+4. **Phase 4** — Checkout & PayHere integration ✅
+5. **Phase 5** — Animations polish & final testing ✅
 
 ### Phase 3 — Build-a-Box
 
@@ -88,4 +91,37 @@ src/
 - Fullness meter, sticky mobile price bar, desktop summary
 - Save & share via `?pkg=&anchor=&addons=&msg=` (presets: `?preset=urban-pro`)
 
-Say **Proceed** in Cursor to advance to Phase 4.
+### Phase 4 — Gifting checkout & PayHere
+
+- Checkout UI at `/checkout` — recipient vs billing, delivery date (≥2 days), surprise toggle
+- Server-priced orders from builder slugs (`POST /api/checkout`) — never trust client prices
+- PayHere Checkout API: server hash (`src/lib/payments/payhere.ts`), auto-POST redirect form
+- Notify webhook `POST /api/payhere/notify` (status_code `2` → `PAID`)
+- Success / cancel pages at `/checkout/success` and `/checkout/error`
+- Demo path when PayHere is unconfigured or via “Complete as demo” in sandbox
+
+#### PayHere env
+
+```bash
+NEXT_PUBLIC_PAYHERE_MERCHANT_ID=
+PAYHERE_MERCHANT_SECRET=
+NEXT_PUBLIC_PAYHERE_ENV=sandbox
+NEXT_PUBLIC_SITE_URL=https://your-public-https-host   # ngrok for local notify_url
+```
+
+Register the same domain in [sandbox.payhere.lk](https://sandbox.payhere.lk) → Integrations, and use the merchant secret for that domain.
+
+### Phase 5 — Motion polish & smoke tests
+
+- Shared motion helpers (`src/lib/motion.ts`) + `useMotionPrefs` (respects `prefers-reduced-motion`)
+- Hero curated-box stagger + fullness fill; landing section fade-ups
+- Builder: step transitions, animated fullness/step indicator, live total tick, sticky bar entrance
+- Checkout entrance + PayHere redirect spinner; success checkmark spring
+- CSS reduced-motion fallback in `globals.css`
+- Smoke script: `npm run smoke` (catalog + checkout demo path)
+
+```bash
+npm run smoke
+```
+
+All five build phases are complete.

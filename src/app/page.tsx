@@ -7,7 +7,7 @@ import { FinalCta } from "@/components/marketing/final-cta"
 
 /**
  * Landing page — Modern Premium Minimalist.
- * Hero (Step 2) leads; remaining sections will be toned in later polish passes.
+ * Hero leads; sections use shared fade-up motion with reduced-motion support.
  */
 export default function HomePage() {
   return (
