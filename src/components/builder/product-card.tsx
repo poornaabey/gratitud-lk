@@ -1,5 +1,6 @@
 "use client"
 
+import { motion } from "framer-motion"
 import { CheckIcon } from "lucide-react"
 
 import { formatLKR } from "@/lib/constants"
@@ -16,12 +17,14 @@ type ProductCardProps = {
 
 export function ProductCard({ product, selected, onToggle, disabled }: ProductCardProps) {
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onToggle}
       disabled={disabled}
+      layout
+      whileTap={disabled ? undefined : { scale: 0.98 }}
       className={cn(
-        "group relative flex w-full flex-col rounded-2xl border p-4 text-left transition-all",
+        "group relative flex w-full flex-col rounded-2xl border p-4 text-left transition-colors",
         "hover:-translate-y-0.5 hover:shadow-soft disabled:pointer-events-none disabled:opacity-50",
         selected
           ? "border-terracotta bg-terracotta/5 ring-2 ring-terracotta/25"
@@ -29,9 +32,13 @@ export function ProductCard({ product, selected, onToggle, disabled }: ProductCa
       )}
     >
       {selected ? (
-        <span className="absolute right-3 top-3 flex size-6 items-center justify-center rounded-full bg-terracotta text-white">
+        <motion.span
+          initial={{ scale: 0.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="absolute right-3 top-3 flex size-6 items-center justify-center rounded-full bg-terracotta text-white"
+        >
           <CheckIcon className="size-3.5 stroke-[2.5]" />
-        </span>
+        </motion.span>
       ) : null}
 
       <div className="mb-3 aspect-[4/3] rounded-xl bg-slate-100 dark:bg-zinc-800" />
@@ -54,6 +61,6 @@ export function ProductCard({ product, selected, onToggle, disabled }: ProductCa
           vol {product.volumeScore}
         </Badge>
       </div>
-    </button>
+    </motion.button>
   )
 }

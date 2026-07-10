@@ -11,6 +11,8 @@ import {
 } from "lucide-react"
 
 import { BUILDER_STEPS } from "@/lib/constants"
+import { viewportOnce } from "@/lib/motion"
+import { useMotionPrefs } from "@/hooks/use-motion-prefs"
 import { Container } from "@/components/layout/container"
 import { SectionHeader } from "@/components/marketing/section-header"
 import { Button } from "@/components/ui/button"
@@ -18,6 +20,8 @@ import { Button } from "@/components/ui/button"
 const STEP_ICONS = [PackageIcon, SmartphoneIcon, SparklesIcon, PenLineIcon, CalendarHeartIcon]
 
 export function HowItWorks() {
+  const motionPrefs = useMotionPrefs()
+
   return (
     <section id="how-it-works" className="bg-white py-20 md:py-28 dark:bg-zinc-950">
       <Container>
@@ -33,10 +37,8 @@ export function HowItWorks() {
             return (
               <motion.li
                 key={step.id}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ delay: index * 0.04, duration: 0.35 }}
+                {...motionPrefs.inView(index * 0.04)}
+                viewport={viewportOnce}
                 className="rounded-3xl border border-zinc-200 bg-slate-50 p-6 dark:border-zinc-800 dark:bg-zinc-900"
               >
                 <div className="mb-5 flex size-11 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-navy dark:border-zinc-700 dark:bg-zinc-950 dark:text-terracotta">

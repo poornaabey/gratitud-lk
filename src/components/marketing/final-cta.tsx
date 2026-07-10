@@ -5,6 +5,8 @@ import { motion } from "framer-motion"
 import { GiftIcon, ShieldCheckIcon, TruckIcon } from "lucide-react"
 
 import { SITE } from "@/lib/constants"
+import { viewportOnce } from "@/lib/motion"
+import { useMotionPrefs } from "@/hooks/use-motion-prefs"
 import { Container } from "@/components/layout/container"
 import { Button } from "@/components/ui/button"
 
@@ -27,14 +29,14 @@ const PERKS = [
 ] as const
 
 export function FinalCta() {
+  const motionPrefs = useMotionPrefs()
+
   return (
     <section className="bg-white py-20 md:py-28 dark:bg-zinc-950">
       <Container>
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
+          {...motionPrefs.inView(0)}
+          viewport={viewportOnce}
           className="overflow-hidden rounded-[2rem] border border-zinc-200 bg-navy px-8 py-14 text-center shadow-soft-lg sm:px-14 dark:border-zinc-800"
         >
           <p className="text-xs font-semibold tracking-[0.18em] text-terracotta uppercase">

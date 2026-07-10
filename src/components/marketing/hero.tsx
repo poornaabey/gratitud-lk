@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { ArrowRightIcon, GiftIcon, MapPinIcon } from "lucide-react"
 
 import { SITE } from "@/lib/constants"
+import { useMotionPrefs } from "@/hooks/use-motion-prefs"
 import { Container } from "@/components/layout/container"
 import { CuratedBoxCard } from "@/components/marketing/curated-box-card"
 import { Button } from "@/components/ui/button"
@@ -29,14 +30,14 @@ const HERO_BOX_ITEMS = [
 ] as const
 
 export function Hero() {
+  const motionPrefs = useMotionPrefs()
+
   return (
     <section className="border-b border-zinc-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-950">
       <Container className="grid items-center gap-16 py-20 md:grid-cols-[1.05fr_0.95fr] md:gap-20 md:py-28 lg:gap-24">
         <div className="space-y-10 text-center md:text-left">
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            {...motionPrefs.fadeUp(0)}
             className="flex flex-wrap items-center justify-center gap-3 md:justify-start"
           >
             <Badge
@@ -54,12 +55,7 @@ export function Hero() {
             </Badge>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.06 }}
-            className="space-y-6"
-          >
+          <motion.div {...motionPrefs.fadeUp(0.06)} className="space-y-6">
             <p className="text-sm font-semibold tracking-[0.18em] text-terracotta uppercase">
               {SITE.name}
             </p>
@@ -75,9 +71,7 @@ export function Hero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.12 }}
+            {...motionPrefs.fadeUp(0.12)}
             className="flex flex-col items-center gap-3 sm:flex-row md:items-start"
           >
             <Button size="lg" className="min-w-48" render={<Link href="/build" />}>
@@ -96,22 +90,18 @@ export function Hero() {
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.22 }}
+            {...(motionPrefs.reduce
+              ? { initial: false, animate: { opacity: 1 } }
+              : { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { delay: 0.22 } })}
             className="text-sm text-zinc-500 dark:text-zinc-400"
           >
             {SITE.deliveryNote}
           </motion.p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mx-auto w-full max-w-md"
-        >
+        <motion.div {...motionPrefs.fadeUp(0.1)} className="mx-auto w-full max-w-md">
           <CuratedBoxCard
+            animated
             title="Urban Pro"
             totalFormatted="LKR 14,500"
             itemCount={HERO_BOX_ITEMS.length}

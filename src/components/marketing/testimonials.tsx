@@ -3,10 +3,14 @@
 import { motion } from "framer-motion"
 
 import { TESTIMONIALS } from "@/lib/data/catalog"
+import { viewportOnce } from "@/lib/motion"
+import { useMotionPrefs } from "@/hooks/use-motion-prefs"
 import { Container } from "@/components/layout/container"
 import { SectionHeader } from "@/components/marketing/section-header"
 
 export function Testimonials() {
+  const motionPrefs = useMotionPrefs()
+
   return (
     <section
       id="stories"
@@ -23,10 +27,8 @@ export function Testimonials() {
           {TESTIMONIALS.map((item, index) => (
             <motion.blockquote
               key={item.id}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.06, duration: 0.35 }}
+              {...motionPrefs.inView(index * 0.06)}
+              viewport={viewportOnce}
               className="flex flex-col rounded-3xl border border-zinc-200 bg-white p-7 shadow-soft dark:border-zinc-800 dark:bg-zinc-900"
             >
               <p className="font-emphasis text-3xl leading-none text-terracotta">&ldquo;</p>

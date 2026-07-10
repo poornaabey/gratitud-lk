@@ -6,12 +6,16 @@ import { ArrowRightIcon } from "lucide-react"
 
 import { formatLKR } from "@/lib/constants"
 import { FEATURED_BOXES } from "@/lib/data/catalog"
+import { viewportOnce } from "@/lib/motion"
+import { useMotionPrefs } from "@/hooks/use-motion-prefs"
 import { Container } from "@/components/layout/container"
 import { SectionHeader } from "@/components/marketing/section-header"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 export function FeaturedBoxes() {
+  const motionPrefs = useMotionPrefs()
+
   return (
     <section
       id="featured"
@@ -35,10 +39,8 @@ export function FeaturedBoxes() {
           {FEATURED_BOXES.map((box, index) => (
             <motion.article
               key={box.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: index * 0.06, duration: 0.4 }}
+              {...motionPrefs.inView(index * 0.06)}
+              viewport={viewportOnce}
               className="group flex flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-soft transition-shadow hover:shadow-soft-md dark:border-zinc-800 dark:bg-zinc-900"
             >
               <div className="relative flex aspect-[16/10] items-end bg-navy p-6 dark:bg-zinc-800">

@@ -1,7 +1,9 @@
 "use client"
 
+import { motion, useReducedMotion } from "framer-motion"
 import { BatteryMediumIcon } from "lucide-react"
 
+import { easeOut } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 type FullnessMeterProps = {
@@ -12,6 +14,7 @@ type FullnessMeterProps = {
 
 /** Premium iOS-style capacity indicator for the Build-a-Box sidebar. */
 export function FullnessMeter({ used, max, className }: FullnessMeterProps) {
+  const reduce = Boolean(useReducedMotion())
   const pct = max > 0 ? Math.min(100, Math.round((used / max) * 100)) : 0
   const over = used > max
 
@@ -35,14 +38,17 @@ export function FullnessMeter({ used, max, className }: FullnessMeterProps) {
           <BatteryMediumIcon className="size-4 text-zinc-400" aria-hidden />
           <span className="text-xs font-semibold tracking-wide uppercase">Box fullness</span>
         </div>
-        <span
+        <motion.span
+          key={`${used}-${max}`}
+          initial={reduce ? false : { opacity: 0.4 }}
+          animate={{ opacity: 1 }}
           className={cn(
             "text-xs font-semibold tabular-nums",
             over ? "text-destructive" : "text-zinc-900 dark:text-zinc-100",
           )}
         >
           {pct}% · {used}/{max}
-        </span>
+        </motion.span>
       </div>
 
       <div
@@ -53,12 +59,14 @@ export function FullnessMeter({ used, max, className }: FullnessMeterProps) {
         aria-valuemax={100}
         aria-label="Box fullness"
       >
-        <div
+        <motion.div
           className={cn(
-            "h-full rounded-full transition-[width] duration-500 ease-out",
+            "h-full rounded-full",
             over ? "bg-destructive" : "bg-navy dark:bg-terracotta",
           )}
-          style={{ width: `${Math.min(pct, 100)}%` }}
+          initial={false}
+          animate={{ width: `${Math.min(pct, 100)}%` }}
+          transition={reduce ? { duration: 0 } : { duration: 0.45, ease: easeOut }}
         />
       </div>
 
